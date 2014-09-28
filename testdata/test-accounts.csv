@@ -1,0 +1,7 @@
+debtor,debtor_id,debtee,initial_balance,interest,minimum_payment,last_updated
+"Bank0","00","Person1",50000.00,0.0425,250.00,"2014-9-7"
+"Bank1","00","Person2",5000.00,0.05,50.00,"2014-10-7"
+"Bank1","01","Person2",3000.00,0.04,40.00,"2014-10-7"
+"Bank1","02","Person2",7000.00,0.03,100.00,"2014-10-7"
+"Bank2","00","Person2",55000.00,0.04,225.00,"2014-10-7"
+"Bank2","01","Person2",13000.00,0.07,180.00,"2014-10-7"
