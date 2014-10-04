@@ -9,7 +9,7 @@ from max_payment_determiner import AnnualRaiseMaxPaymentDeterminer
 from max_payment_determiner import MinimumAnnualRaiseMaxPaymentDeterminer
 from max_payment_determiner import AnnualRaiseAndBonusMaxPaymentDeterminer
 from max_payment_determiner import MinimumAnnualRaiseAndBonusMaxPaymentDeterminer
-
+from money import Money
 
 class ConstantMaxPaymentDeterminerTestCase(unittest.TestCase):
     def setUp(self):
@@ -20,14 +20,14 @@ class ConstantMaxPaymentDeterminerTestCase(unittest.TestCase):
 
     def test_determine_max_payment_for_should_return_constant_with_different_dates(self):
         payments_per_year = 12
-        expected_max_payment = (1000, 0)
+        expected_max_payment = (Money(1000), Money(0))
         self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 1, 1)), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 6, 1)), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2015, 6, 1)), expected_max_payment)
 
     def test_determine_max_payment_for_should_return_constant_with_different_payments_per_year(self):
         payment_date = date(2014, 1, 1)
-        expected_max_payment = (1000, 0)
+        expected_max_payment = (Money(1000), Money(0))
         self.assertEqual(self.payment_manager.determine_max_payment_for(1, payment_date), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(4, payment_date), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(12, payment_date), expected_max_payment)
@@ -42,14 +42,14 @@ class ConstantMaxPaymentDeterminerWithBonusTestCase(unittest.TestCase):
 
     def test_determine_max_payment_for_should_return_constant_with_different_dates(self):
         payments_per_year = 12
-        expected_max_payment = (1000, 100)
+        expected_max_payment = (Money(1000), Money(100))
         self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 1, 1)), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 6, 1)), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2015, 6, 1)), expected_max_payment)
 
     def test_determine_max_payment_for_should_return_constant_with_different_payments_per_year(self):
         payment_date = date(2014, 1, 1)
-        expected_max_payment = (1000, 100)
+        expected_max_payment = (Money(1000), Money(100))
         self.assertEqual(self.payment_manager.determine_max_payment_for(1, payment_date), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(4, payment_date), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(12, payment_date), expected_max_payment)
@@ -67,14 +67,14 @@ class MinimumMaxPaymentDeterminerTestCase(unittest.TestCase):
 
     def test_determine_max_payment_for_should_return_constant_with_different_dates(self):
         payments_per_year = 12
-        expected_max_payment = (500, 0)
+        expected_max_payment = (Money(500), Money(0))
         self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 1, 1)), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 6, 1)), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2015, 6, 1)), expected_max_payment)
 
     def test_determine_max_payment_for_should_return_constant_with_different_payments_per_year(self):
         payment_date = date(2014, 1, 1)
-        expected_max_payment = (500, 0)
+        expected_max_payment = (Money(500), Money(0))
         self.assertEqual(self.payment_manager.determine_max_payment_for(1, payment_date), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(4, payment_date), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(12, payment_date), expected_max_payment)
@@ -89,22 +89,22 @@ class AnnualRaiseMaxPaymentDeterminerTestCase(unittest.TestCase):
 
     def test_determine_max_payment_for_should_return_correct_values_when_different_dates(self):
         payments_per_year = 12
-        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 1, 1)), (1000.00, 0))
-        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 6, 1)), (1312.50, 0))
-        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2015, 6, 1)), (1625.00, 0))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 1, 1)), (Money(1000.00), Money(0)))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 6, 1)), (Money(1312.50), Money(0)))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2015, 6, 1)), (Money(1625.00), Money(0)))
 
     def test_determine_max_payment_for_should_return_correct_values_when_payments_per_year_when_no_raise(self):
         payment_date = date(2014, 1, 1)
-        expected_max_payment = (1000, 0)
+        expected_max_payment = (Money(1000), Money(0))
         self.assertEqual(self.payment_manager.determine_max_payment_for(1, payment_date), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(4, payment_date), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(12, payment_date), expected_max_payment)
 
     def test_determine_max_payment_for_should_return_correct_values_when_payments_per_year_when_raise(self):
         payment_date = date(2014, 10, 1)
-        self.assertEqual(self.payment_manager.determine_max_payment_for(1, payment_date), (4750.00, 0))
-        self.assertEqual(self.payment_manager.determine_max_payment_for(4, payment_date), (1937.50, 0))
-        self.assertEqual(self.payment_manager.determine_max_payment_for(12, payment_date), (1312.50, 0))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(1, payment_date), (Money(4750.00), Money(0)))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(4, payment_date), (Money(1937.50), Money(0)))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(12, payment_date), (Money(1312.50), Money(0)))
 
 
 class MinimumAnnualRaiseMaxPaymentDeterminerTestCase(unittest.TestCase):
@@ -119,22 +119,22 @@ class MinimumAnnualRaiseMaxPaymentDeterminerTestCase(unittest.TestCase):
 
     def test_determine_max_payment_for_should_return_correct_values_when_different_dates(self):
         payments_per_year = 12
-        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 1, 1)), (500.00, 0))
-        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 6, 1)), (812.50, 0))
-        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2015, 6, 1)), (1125.00, 0))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 1, 1)), (Money(500.00), Money(0)))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 6, 1)), (Money(812.50), Money(0)))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2015, 6, 1)), (Money(1125.00), Money(0)))
 
     def test_determine_max_payment_for_should_return_correct_values_when_payments_per_year_when_no_raise(self):
         payment_date = date(2014, 1, 1)
-        expected_max_payment = (500, 0)
+        expected_max_payment = (Money(500), Money(0))
         self.assertEqual(self.payment_manager.determine_max_payment_for(1, payment_date), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(4, payment_date), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(12, payment_date), expected_max_payment)
 
     def test_determine_max_payment_for_should_return_correct_values_when_payments_per_year_when_raise(self):
         payment_date = date(2014, 10, 1)
-        self.assertEqual(self.payment_manager.determine_max_payment_for(1, payment_date), (4250.00, 0))
-        self.assertEqual(self.payment_manager.determine_max_payment_for(4, payment_date), (1437.50, 0))
-        self.assertEqual(self.payment_manager.determine_max_payment_for(12, payment_date), (812.50, 0))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(1, payment_date), (Money(4250.00), Money(0)))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(4, payment_date), (Money(1437.50), Money(0)))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(12, payment_date), (Money(812.50), Money(0)))
 
 
 class AnnualRaiseAndBonusMaxPaymentDeterminerTestCaseTestCase(unittest.TestCase):
@@ -146,22 +146,22 @@ class AnnualRaiseAndBonusMaxPaymentDeterminerTestCaseTestCase(unittest.TestCase)
 
     def test_determine_max_payment_for_should_return_correct_values_when_different_dates(self):
         payments_per_year = 12
-        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 1, 1)), (1000.00, 0))
-        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 6, 1)), (1312.50, 0))
-        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2015, 6, 1)), (1625.00, 0))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 1, 1)), (Money(1000.00), Money(0)))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 6, 1)), (Money(1312.50), Money(0)))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2015, 6, 1)), (Money(1625.00), Money(0)))
 
     def test_determine_max_payment_for_should_return_correct_values_when_payments_per_year_when_no_raise(self):
         payment_date = date(2014, 1, 1)
-        expected_max_payment = (1000, 0)
+        expected_max_payment = (Money(1000), Money(0))
         self.assertEqual(self.payment_manager.determine_max_payment_for(1, payment_date), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(4, payment_date), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(12, payment_date), expected_max_payment)
 
     def test_determine_max_payment_for_should_return_correct_values_when_payments_per_year_when_raise(self):
         payment_date = date(2014, 10, 1)
-        self.assertEqual(self.payment_manager.determine_max_payment_for(1, payment_date), (4750.00, 7500.00))
-        self.assertEqual(self.payment_manager.determine_max_payment_for(4, payment_date), (1937.50, 0))
-        self.assertEqual(self.payment_manager.determine_max_payment_for(12, payment_date), (1312.50, 0))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(1, payment_date), (Money(4750.00), Money(7875.00)))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(4, payment_date), (Money(1937.50), Money(0)))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(12, payment_date), (Money(1312.50), Money(0)))
 
 
 class MinimumAnnualRaiseAndBonusMaxPaymentDeterminerTestCase(unittest.TestCase):
@@ -176,22 +176,22 @@ class MinimumAnnualRaiseAndBonusMaxPaymentDeterminerTestCase(unittest.TestCase):
 
     def test_determine_max_payment_for_should_return_correct_values_when_different_dates(self):
         payments_per_year = 12
-        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 1, 1)), (500.00, 0))
-        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 6, 1)), (812.50, 0))
-        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2015, 6, 1)), (1125.00, 0))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 1, 1)), (Money(500.00), Money(0)))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2014, 6, 1)), (Money(812.50), Money(0)))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(payments_per_year, date(2015, 6, 1)), (Money(1125.00), Money(0)))
 
     def test_determine_max_payment_for_should_return_correct_values_when_payments_per_year_when_no_raise(self):
         payment_date = date(2014, 1, 1)
-        expected_max_payment = (500, 0)
+        expected_max_payment = (Money(500), Money(0))
         self.assertEqual(self.payment_manager.determine_max_payment_for(1, payment_date), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(4, payment_date), expected_max_payment)
         self.assertEqual(self.payment_manager.determine_max_payment_for(12, payment_date), expected_max_payment)
 
     def test_determine_max_payment_for_should_return_correct_values_when_payments_per_year_when_raise(self):
         payment_date = date(2014, 10, 1)
-        self.assertEqual(self.payment_manager.determine_max_payment_for(1, payment_date), (4250.00, 7500.00))
-        self.assertEqual(self.payment_manager.determine_max_payment_for(4, payment_date), (1437.50, 0))
-        self.assertEqual(self.payment_manager.determine_max_payment_for(12, payment_date), (812.50, 0))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(1, payment_date), (Money(4250.00), Money(7875.00)))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(4, payment_date), (Money(1437.50), Money(0)))
+        self.assertEqual(self.payment_manager.determine_max_payment_for(12, payment_date), (Money(812.50), Money(0)))
 
 if __name__ == '__main__':
     unittest.main()

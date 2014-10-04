@@ -6,6 +6,7 @@ import os.path
 
 import payment_manager
 from payoff_calculator import calculate_payoff
+from money import Money
 
 
 def load_accounts(file_name):
@@ -34,8 +35,8 @@ def _dump_to_file(accounts, monthly_infos, output_dir, id):
         writer = csv.DictWriter(f, headers)
         writer.writeheader()
         for monthly_info in monthly_infos:
-            total_paid = 0
-            total_remaining = 0
+            total_paid = Money(0)
+            total_remaining = Money(0)
             mp = {}
             current_date, month_payment = monthly_info
             mp['Date'] = current_date
@@ -51,7 +52,7 @@ def _dump_to_file(accounts, monthly_infos, output_dir, id):
 
 
 def analyze(max_payment_determiner, payment_manager, bonus_payment_manager, accounts, generate_details=True, details_directory='results'):
-    initial_debt = sum([a.initial_balance for a in accounts])
+    initial_debt = sum([a.initial_balance for a in accounts], Money(0))
     (total_paid, months, monthly_payments) = calculate_payoff(max_payment_determiner, payment_manager, bonus_payment_manager, accounts)
     if generate_details:
         _dump_to_file(accounts, monthly_payments, details_directory, max_payment_determiner.id + '_' + payment_manager.id + '_' + bonus_payment_manager.id)

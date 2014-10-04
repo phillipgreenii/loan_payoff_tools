@@ -7,6 +7,7 @@ import shutil
 import analysis
 import max_payment_determiner
 import payment_manager
+from money import Money
 
 
 class AnalysisTestCase(unittest.TestCase):
@@ -27,9 +28,9 @@ class AnalysisTestCase(unittest.TestCase):
         self.assertEqual(mpd_id, mpd.id)
         self.assertEqual(pm_id, pm.id)
         self.assertEqual(bpm_id, bpm.id)
-        self.assertEqual(months, 54)
-        self.assertEqual(total_paid, 146069.99671309063)
-        self.assertEqual(to_interest, 13069.99671309063)
+        self.assertEqual(months, 75)
+        self.assertEqual(total_paid, Money(152349.03))
+        self.assertEqual(to_interest, Money(19349.03))
 
 
 if __name__ == '__main__':

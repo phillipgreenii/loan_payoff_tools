@@ -3,6 +3,7 @@ import operator
 import datetime
 import calendar
 import collections
+from money import Money
 
 
 def _add_months(source_date, months):
@@ -25,9 +26,13 @@ def _build_date_incrementer(payments_per_year):
 
 
 def _combine_payments(*payment_groups):
-    result = dict(sum((collections.Counter(x) for x in payment_groups),
-                      collections.Counter()))
-    return result
+    combined_payments = {}
+    for payments in payment_groups:
+        for a, p in payments.items():
+            if a not in combined_payments:
+                combined_payments[a] = Money(0)
+            combined_payments[a] += p
+    return combined_payments
 
 
 def calculate_payoff(max_payment_determiner, payment_manager, bonus_payment_manager, accounts, starting_date=None, payments_per_year=12):
@@ -38,19 +43,20 @@ def calculate_payoff(max_payment_determiner, payment_manager, bonus_payment_mana
     current_payment_date = starting_date or datetime.date.today()
     remaining_accounts_balance = {a: a.initial_balance for a in accounts}
     monthly_payments = []
-    total_paid = 0
+    total_paid = Money(0)
     while remaining_accounts_balance:
         # apply interest
         for account in remaining_accounts_balance.keys():
             remaining_accounts_balance[account] *= (1+account.interest/payments_per_year)
         (max_payment, bonus) = max_payment_determiner(payments_per_year, current_payment_date)
         account_payments = payment_manager(max_payment, remaining_accounts_balance)
+
         remaining_accounts_balance = calculate_remaining_accounts_balance(remaining_accounts_balance, account_payments)
-        if bonus > 0:
+        if bonus:
             bonus_account_payments = bonus_payment_manager(bonus, remaining_accounts_balance, ignore_minimum_payments = True)
             remaining_accounts_balance = calculate_remaining_accounts_balance(remaining_accounts_balance, bonus_account_payments)
             account_payments = _combine_payments(account_payments, bonus_account_payments)
-        total_paid += sum(account_payments.values())
-        monthly_payments.append((current_payment_date, {a: (p, remaining_accounts_balance.get(a, 0)) for a, p in account_payments.items()}))
+        total_paid += sum(account_payments.values(), Money(0))
+        monthly_payments.append((current_payment_date, {a: (p, remaining_accounts_balance.get(a, Money(0))) for a, p in account_payments.items()}))
         current_payment_date = payment_date_incrementer(current_payment_date)
     return total_paid, len(monthly_payments), monthly_payments
