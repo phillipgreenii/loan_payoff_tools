@@ -12,6 +12,7 @@ from payment_manager import EvenSplitPaymentManager
 from payment_manager import SpecifiedSplitPaymentManager
 from max_payment_determiner import ConstantMaxPaymentDeterminer
 from money import Money
+import money
 
 
 class PaymentManagerMakePaymentsTestCase(unittest.TestCase):

@@ -2,6 +2,7 @@ import itertools
 import operator
 
 from money import Money
+import money
 
 class Account(object):
     def __init__(self, debtor, debtor_id, debtee, initial_balance, interest, minimum_payment, last_updated):
@@ -32,14 +33,14 @@ class PaymentManager(object):
 
 def make_ranked_payments(rank_fn, max_payment, accounts_to_balances, ignore_minimum_payments):
     if ignore_minimum_payments:
-        payments = {a: Money(0) for a, b in accounts_to_balances.items()}
+        payments = {a: money.ZERO for a, b in accounts_to_balances.items()}
     else:
         payments = {a: min(b, a.minimum_payment) for a, b in accounts_to_balances.items()}
 
     # find "best" account
     def calc_rank(account):
         return rank_fn(account, accounts_to_balances[account])
-    remaining = max_payment - sum(payments.values(), Money(0))
+    remaining = max_payment - sum(payments.values(), money.ZERO)
     for current in sorted(accounts_to_balances.keys(), key=calc_rank):
         if not remaining:
             break
@@ -96,13 +97,13 @@ class BiggestDebtPaymentManager(PaymentManager):
 
 def make_split_payments(share_fn, max_payment, accounts_to_balances, ignore_minimum_payments):
     if ignore_minimum_payments:
-        payments = {a: Money(0) for a, b in accounts_to_balances.items()}
+        payments = {a: money.ZERO for a, b in accounts_to_balances.items()}
     else:
         payments = {a: min(b, a.minimum_payment) for a, b in accounts_to_balances.items()}
     uncomplete_accounts = {a for a in accounts_to_balances.keys() if payments[a] < accounts_to_balances[a]}
-    remaining = max_payment - sum(payments.values(), Money(0))
+    remaining = max_payment - sum(payments.values(), money.ZERO)
     changing = True
-    while changing and uncomplete_accounts and remaining > Money(0):
+    while changing and uncomplete_accounts and remaining > money.ZERO:
         changing = False
         updated_accounts_to_balances = {a: accounts_to_balances[a]-payments[a] for a in uncomplete_accounts}
         shares = share_fn(updated_accounts_to_balances)
@@ -115,7 +116,7 @@ def make_split_payments(share_fn, max_payment, accounts_to_balances, ignore_mini
             if payments[a] != p:
                 payments[a] = p
                 changing = True
-        remaining = max(max_payment - sum(payments.values(), Money(0)), Money(0))
+        remaining = max(max_payment - sum(payments.values(), money.ZERO), money.ZERO)
         uncomplete_accounts = {a for a in uncomplete_accounts if payments[a] < accounts_to_balances[a]}
     return payments
 
@@ -126,7 +127,7 @@ class WeightedSplitPaymentManager(PaymentManager):
 
     def _make_payments(self, max_payment, accounts_to_balances, ignore_minimum_payments):
         def split_by_balance(a_to_b):
-            total = float(sum(a_to_b.values(), Money(0)))
+            total = float(sum(a_to_b.values(), money.ZERO))
             return {a: float(b)/total for a, b in a_to_b.items()}
         return make_split_payments(split_by_balance, max_payment, accounts_to_balances, ignore_minimum_payments)
 
@@ -157,7 +158,7 @@ class SpecifiedSplitPaymentManager(PaymentManager):
             debtor_splits = {}
             for group, accounts in itertools.groupby(sorted(a_to_b.keys(), key=key_fn), key_fn):
                 accounts = list(accounts)
-                group_total = sum([a_to_b[a] for a in accounts], Money(0))
+                group_total = sum([a_to_b[a] for a in accounts], money.ZERO)
                 for a in accounts:
                     debtor_splits[a] = self.split[group]*float(a_to_b[a])/float(group_total)
             return debtor_splits

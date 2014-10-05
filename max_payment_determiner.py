@@ -1,4 +1,5 @@
 from money import Money
+import money
 
 class MaxPaymentDeterminer(object):
 
@@ -29,7 +30,7 @@ class ConstantMaxPaymentDeterminer(MaxPaymentDeterminer):
 class MinimumMaxPaymentDeterminer(ConstantMaxPaymentDeterminer):
 
     def __init__(self, accounts):
-        min_payment = sum([a.minimum_payment for a in accounts], Money(0))
+        min_payment = sum([a.minimum_payment for a in accounts], money.ZERO)
         ConstantMaxPaymentDeterminer.__init__(self, min_payment, 0)
 
 
@@ -48,13 +49,13 @@ class AnnualRaiseMaxPaymentDeterminer(MaxPaymentDeterminer):
     def determine_max_payment_for(self, payments_per_year, date):
         raises = (date - self.last_raise_date).days / 365
         extra_payment = self.inital_salary * (self.annual_raise_percent * raises * (1 - self.tax_rate) / payments_per_year)
-        return (self.initial_max_payment + extra_payment, Money(0))
+        return (self.initial_max_payment + extra_payment, money.ZERO)
 
 
 class MinimumAnnualRaiseMaxPaymentDeterminer(AnnualRaiseMaxPaymentDeterminer):
 
     def __init__(self, inital_salary, annual_raise_percent, last_raise_date, accounts):
-        min_payment = sum([a.minimum_payment for a in accounts], Money(0))
+        min_payment = sum([a.minimum_payment for a in accounts], money.ZERO)
         AnnualRaiseMaxPaymentDeterminer.__init__(self, inital_salary, annual_raise_percent, last_raise_date, min_payment)
 
 
@@ -79,12 +80,12 @@ class AnnualRaiseAndBonusMaxPaymentDeterminer(MaxPaymentDeterminer):
         extra_payment = (adjusted_salary - self.inital_salary)  * ((1 - self.tax_rate) / payments_per_year)
         # FIXME can this be more clear? need to find if the current date is approximately a year later
         apply_bonus = ((days_since_raise % 365) / days_between_payments == 0) and raises > 0
-        bonus = Money(0) if not apply_bonus else (adjusted_salary * ((self.annual_bonus_percent * (1 - self.tax_rate))))
+        bonus = money.ZERO if not apply_bonus else (adjusted_salary * ((self.annual_bonus_percent * (1 - self.tax_rate))))
         return (self.initial_max_payment + extra_payment, bonus)
 
 
 class MinimumAnnualRaiseAndBonusMaxPaymentDeterminer(AnnualRaiseAndBonusMaxPaymentDeterminer):
 
     def __init__(self, inital_salary, annual_raise_percent, annual_bonus_percent, last_raise_date, accounts):
-        min_payment = sum([a.minimum_payment for a in accounts], Money(0))
+        min_payment = sum([a.minimum_payment for a in accounts], money.ZERO)
         AnnualRaiseAndBonusMaxPaymentDeterminer.__init__(self, inital_salary, annual_raise_percent, annual_bonus_percent, last_raise_date, min_payment)
