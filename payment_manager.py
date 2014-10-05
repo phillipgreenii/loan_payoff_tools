@@ -102,12 +102,16 @@ def make_split_payments(share_fn, max_payment, accounts_to_balances, ignore_mini
     uncomplete_accounts = {a for a in accounts_to_balances.keys() if payments[a] < accounts_to_balances[a]}
     remaining = max_payment - sum(payments.values(), Money(0))
     changing = True
-    while changing and uncomplete_accounts:
+    while changing and uncomplete_accounts and remaining > Money(0):
         changing = False
         updated_accounts_to_balances = {a: accounts_to_balances[a]-payments[a] for a in uncomplete_accounts}
         shares = share_fn(updated_accounts_to_balances)
+        # adjust shares for missing accounts (ie accounts that have already been paid off)
+        # if shares doesn't equal up to 1, then all remaining money won't be allocated, so the iterations go
+        # way up
+        shares_total = sum([s for a, s in shares.items()])
         for a in uncomplete_accounts:
-            p = min(shares[a]*remaining + payments[a], accounts_to_balances[a])
+            p = min((shares[a]/shares_total*remaining) + payments[a], accounts_to_balances[a])
             if payments[a] != p:
                 payments[a] = p
                 changing = True

@@ -1229,7 +1229,7 @@ class TestSpecifiedSplitPaymentManager(PaymentManagerMakePaymentsTestCase):
         account2 = Account("Bank1", "00", "Joe", 5000, 0.03, 50.00, date(2014, 5, 1))
         accounts_to_balances = {account0: Money(600.00), account1: Money(400.00), account2: Money(50.00)}
 
-        expected_payments = {account0: Money(567.65), account1: Money(382.34), account2: Money(50.00)}
+        expected_payments = {account0: Money(567.65), account1: Money(382.35), account2: Money(50.00)}
 
         payments = self.payment_manager(self.max_total_payment, accounts_to_balances, False)
 
@@ -1244,7 +1244,7 @@ class TestSpecifiedSplitPaymentManager(PaymentManagerMakePaymentsTestCase):
         account2 = Account("Bank1", "00", "Joe", 5000, 0.03, 50.00, date(2014, 5, 1))
         accounts_to_balances = {account0: Money(600.00), account1: Money(400.00), account2: Money(50.00)}
 
-        expected_payments = {account0: Money(569.99), account1: Money(380.00), account2: Money(50.00)}
+        expected_payments = {account0: Money(570.00), account1: Money(380.00), account2: Money(50.00)}
 
         payments = self.payment_manager(self.max_total_payment, accounts_to_balances, True)
 
