@@ -29,8 +29,8 @@ class AnalysisTestCase(unittest.TestCase):
         self.assertEqual(pm_id, pm.id)
         self.assertEqual(bpm_id, bpm.id)
         self.assertEqual(months, 75)
-        self.assertEqual(total_paid, Money(152349.03))
-        self.assertEqual(to_interest, Money(19349.03))
+        self.assertEqual(total_paid, Money(152349.04))
+        self.assertEqual(to_interest, Money(19349.04))
 
 
 if __name__ == '__main__':

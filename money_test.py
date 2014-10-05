@@ -7,23 +7,23 @@ class MoneyTestCase(unittest.TestCase):
 
     def test_constructor_with_money(self):
         other_money = Money(100.00)
-        self.assertEqual(Money(other_money)._value, decimal.Decimal("100.00"))
+        self.assertEqual(Money(other_money)._cents, 10000)
 
     def test_constructor_with_string(self):
-        self.assertEqual(Money("100.00")._value, decimal.Decimal("100.00"))
+        self.assertEqual(Money("100.00")._cents, 10000)
 
     def test_constructor_with_decimal(self):
-        self.assertEqual(Money(decimal.Decimal(100.00))._value, decimal.Decimal("100.00"))
+        self.assertEqual(Money(decimal.Decimal(100.00))._cents, 10000)
 
     def test_constructor_with_int(self):
-        self.assertEqual(Money(int(100))._value, decimal.Decimal("100.00"))
+        self.assertEqual(Money(int(100))._cents, 10000)
 
     def test_constructor_with_long(self):
-        self.assertEqual(Money(long(100))._value, decimal.Decimal("100.00"))
+        self.assertEqual(Money(long(100))._cents, 10000)
 
     def test_constructor_with_float(self):
-        self.assertEqual(Money(float(100.00))._value, decimal.Decimal("100.00"))
-        self.assertEqual(Money(float(32.34))._value, decimal.Decimal("32.34"))
+        self.assertEqual(Money(float(100.00))._cents, 10000)
+        self.assertEqual(Money(float(32.34))._cents, 3234)
 
     def test_str(self):
         self.assertEqual(str(Money(int(100))), "$100.00")
