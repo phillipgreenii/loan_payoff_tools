@@ -23,14 +23,16 @@ class AnalysisTestCase(unittest.TestCase):
         pm = payment_manager.BiggestDebtPaymentManager()
         bpm = payment_manager.EvenSplitPaymentManager()
 
-        (mpd_id, pm_id, bpm_id, months, total_paid, to_interest) = analysis.analyze(mpd, pm, bpm, self.accounts, details_directory=self.temp_dir)
+        (r_mpd, r_pm, r_bpm, months, initial_paid, total_paid, to_interest, monthly_payments) = analysis.analyze(mpd, pm, bpm, self.accounts, details_directory=self.temp_dir)
 
-        self.assertEqual(mpd_id, mpd.id)
-        self.assertEqual(pm_id, pm.id)
-        self.assertEqual(bpm_id, bpm.id)
+        self.assertEqual(r_mpd, mpd)
+        self.assertEqual(r_pm, pm)
+        self.assertEqual(r_bpm, bpm)
         self.assertEqual(months, 75)
+        self.assertEqual(initial_paid, Money(133000.00))
         self.assertEqual(total_paid, Money(152349.04))
         self.assertEqual(to_interest, Money(19349.04))
+        self.assertIsNotNone(monthly_payments)
 
 
 if __name__ == '__main__':
