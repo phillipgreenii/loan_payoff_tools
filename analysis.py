@@ -52,6 +52,45 @@ def dump_monthly_payments_to_csv(output_file, monthly_payments):
             mp['Total-Remaining'] = total_remaining
             writer.writerow(mp)
 
+try:
+    import matplotlib.pyplot as plt
+
+    def dump_monthly_payments_to_png(output_file, monthly_payments):
+        # build x y remaining per account
+        by_account = {}
+        timestamps = []
+        for mp in monthly_payments:
+            timestamp, payments = mp
+            timestamps.append(timestamp)
+            for account, (payment, remaining) in payments.items():
+                if account not in by_account:
+                    by_account[account] = []
+                by_account[account].append(float(remaining))
+
+        fig = plt.figure()
+        graph = fig.add_subplot(111)
+        for account in sorted(by_account.keys(), reverse=True):
+            y = by_account[account]
+            x = timestamps[:len(y)]
+            graph.plot(x, y, label=str(account))
+
+        graph.set_xticks(x)
+        graph.set_xticklabels([x.strftime("%Y-%m-%d") for x in x])
+
+        plt.legend(loc='upper right')
+
+        # Shrink current axis by 20%
+        box = graph.get_position()
+        graph.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+
+        # Put a legend to the right of the current axis
+        graph.legend(loc='center left', bbox_to_anchor=(1, 0.5), prop={'size':6})
+
+        plt.savefig(output_file)
+
+except ImportError:
+    pass
+
 AnalysisResults = collections.namedtuple('AnalysisResults', ['max_payment_determiner', 'payment_manager', 'bonus_payment_manager', 'months', 'initial_debt', 'total_paid', 'interest_paid', 'monthly_payments'])
 
 
