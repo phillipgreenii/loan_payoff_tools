@@ -29,13 +29,14 @@ def load_accounts(file_name):
     return accounts
 
 
-def _dump_to_file(accounts, monthly_infos, output_dir, id):
-    with open(os.path.join(output_dir, id + ".csv"), 'wb') as f:
+def dump_monthly_payments_to_csv(output_file, monthly_payments):
+    with open(output_file, 'wb') as f:
+        accounts = monthly_payments[0][1].keys()
         ids = sorted(map(str, accounts)) + ['Total']
         headers = ['Date'] + list(itertools.starmap(operator.add, (itertools.product(ids, ['-Paid', '-Remaining']))))
         writer = csv.DictWriter(f, headers)
         writer.writeheader()
-        for monthly_info in monthly_infos:
+        for monthly_info in monthly_payments:
             total_paid = money.ZERO
             total_remaining = money.ZERO
             mp = {}
@@ -51,12 +52,10 @@ def _dump_to_file(accounts, monthly_infos, output_dir, id):
             mp['Total-Remaining'] = total_remaining
             writer.writerow(mp)
 
-
 AnalysisResults = collections.namedtuple('AnalysisResults', ['max_payment_determiner', 'payment_manager', 'bonus_payment_manager', 'months', 'initial_debt', 'total_paid', 'interest_paid', 'monthly_payments'])
 
-def analyze(max_payment_determiner, payment_manager, bonus_payment_manager, accounts, generate_details=True, details_directory='results'):
+
+def analyze(max_payment_determiner, payment_manager, bonus_payment_manager, accounts):
     initial_debt = sum([a.initial_balance for a in accounts], money.ZERO)
     (total_paid, months, monthly_payments) = calculate_payoff(max_payment_determiner, payment_manager, bonus_payment_manager, accounts)
-    if generate_details:
-        _dump_to_file(accounts, monthly_payments, details_directory, max_payment_determiner.id + '_' + payment_manager.id + '_' + bonus_payment_manager.id)
     return AnalysisResults(max_payment_determiner, payment_manager, bonus_payment_manager, months, initial_debt, total_paid, total_paid - initial_debt, monthly_payments)
