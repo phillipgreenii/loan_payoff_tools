@@ -16,11 +16,6 @@ The easiest way to install most Python packages is via ``easy_install`` or ``pip
   Usage
   -----
 
-  TODO: This is a good place to start with a couple of concrete examples of how the package should be used.
-
-  The boilerplate code provides a dummy ``main`` function that prints out the word 'Hello'::
-
-    >> from loan_payoff_tools import main
-    >> main()
+    >> import loan_payoff_tools
 
     When the package is installed via ``easy_install`` or ``pip`` this function will be bound to the ``loan_payoff_tools`` executable in the Python installation's ``bin`` directory (on Windows - the ``Scripts`` directory).
