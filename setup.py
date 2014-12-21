@@ -74,5 +74,9 @@ setup(
     install_requires=[],
 
     tests_require=['pytest'],
-    cmdclass={'test': PyTest}
+    cmdclass={'test': PyTest},
+
+    extras_require = {
+        'png':  ["matplotlib"]
+    }
 )
