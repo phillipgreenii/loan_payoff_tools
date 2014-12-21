@@ -1,18 +1,29 @@
+'''
+loan_payoff_tools: Test module.
+
+Meant for use with py.test.
+Write each test as a function named test_<something>.
+Read more here: http://pytest.org/
+
+Copyright 2014, Phillip Green II
+Licensed under MIT
+'''
+
 import unittest
 import os.path
 import tempfile
 import shutil
 import datetime
 
-import analysis
-import max_payment_determiner
-import payment_manager
-from money import Money
-from payment_manager import Account
+import loan_payoff_tools.analysis as analysis
+import loan_payoff_tools.max_payment_determiner as max_payment_determiner
+import loan_payoff_tools.payment_manager as payment_manager
+from loan_payoff_tools.money import Money
+from loan_payoff_tools.payment_manager import Account
 
 class AnalysisTestCase(unittest.TestCase):
     def setUp(self):
-        self.accounts = analysis.load_accounts(os.path.join('testdata','test-accounts.csv'))
+        self.accounts = analysis.load_accounts(os.path.join('tests', 'data','test-accounts.csv'))
         self.temp_dir = tempfile.mkdtemp('analysis-test')
 
     def tearDown(self):
@@ -52,7 +63,7 @@ class AnalysisTestCase(unittest.TestCase):
         output_file = os.path.join(self.temp_dir, 'test.csv')
         analysis.dump_monthly_payments_to_csv(output_file, monthly_payments)
         self.assertTrue(os.path.isfile(output_file))
-        self.assertEqual(open(output_file).readlines(), open(os.path.join('testdata', 'expected-test-results-dump.csv')).readlines())
+        self.assertEqual(open(output_file).readlines(), open(os.path.join('tests', 'data', 'expected-test-results-dump.csv')).readlines())
 
     def test_dump_monthly_payments_to_png(self):
         account0 = Account("Bank1", "00", "Person2", 5000.00, 0.05, 50.00, datetime.date(2014, 10, 7))

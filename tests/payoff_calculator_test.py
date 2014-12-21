@@ -1,13 +1,24 @@
+'''
+loan_payoff_tools: Test module.
+
+Meant for use with py.test.
+Write each test as a function named test_<something>.
+Read more here: http://pytest.org/
+
+Copyright 2014, Phillip Green II
+Licensed under MIT
+'''
+
 import unittest
 from datetime import date
 
-from payment_manager import Account
-from payment_manager import MinimumPaymentManager
-from payment_manager import EvenSplitPaymentManager
-from max_payment_determiner import ConstantMaxPaymentDeterminer
-from money import Money
+from loan_payoff_tools.payment_manager import Account
+from loan_payoff_tools.payment_manager import MinimumPaymentManager
+from loan_payoff_tools.payment_manager import EvenSplitPaymentManager
+from loan_payoff_tools.max_payment_determiner import ConstantMaxPaymentDeterminer
+from loan_payoff_tools.money import Money
 
-import payoff_calculator
+import loan_payoff_tools.payoff_calculator as payoff_calculator
 
 
 class PayoffCalculatorTestCase(unittest.TestCase):

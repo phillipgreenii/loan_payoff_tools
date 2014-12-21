@@ -1,15 +1,25 @@
+'''
+loan_payoff_tools: Test module.
+
+Meant for use with py.test.
+Write each test as a function named test_<something>.
+Read more here: http://pytest.org/
+
+Copyright 2014, Phillip Green II
+Licensed under MIT
+'''
 
 import unittest
 from datetime import date
 
-from payment_manager import Account
-from max_payment_determiner import ConstantMaxPaymentDeterminer
-from max_payment_determiner import MinimumMaxPaymentDeterminer
-from max_payment_determiner import AnnualRaiseMaxPaymentDeterminer
-from max_payment_determiner import MinimumAnnualRaiseMaxPaymentDeterminer
-from max_payment_determiner import AnnualRaiseAndBonusMaxPaymentDeterminer
-from max_payment_determiner import MinimumAnnualRaiseAndBonusMaxPaymentDeterminer
-from money import Money
+from loan_payoff_tools.payment_manager import Account
+from loan_payoff_tools.max_payment_determiner import ConstantMaxPaymentDeterminer
+from loan_payoff_tools.max_payment_determiner import MinimumMaxPaymentDeterminer
+from loan_payoff_tools.max_payment_determiner import AnnualRaiseMaxPaymentDeterminer
+from loan_payoff_tools.max_payment_determiner import MinimumAnnualRaiseMaxPaymentDeterminer
+from loan_payoff_tools.max_payment_determiner import AnnualRaiseAndBonusMaxPaymentDeterminer
+from loan_payoff_tools.max_payment_determiner import MinimumAnnualRaiseAndBonusMaxPaymentDeterminer
+from loan_payoff_tools.money import Money
 
 class ConstantMaxPaymentDeterminerTestCase(unittest.TestCase):
     def setUp(self):

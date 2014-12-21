@@ -1,6 +1,17 @@
+'''
+loan_payoff_tools: Test module.
+
+Meant for use with py.test.
+Write each test as a function named test_<something>.
+Read more here: http://pytest.org/
+
+Copyright 2014, Phillip Green II
+Licensed under MIT
+'''
+
 import unittest
 
-import utils
+import loan_payoff_tools.utils as utils
 
 
 class UtilsTestCase(unittest.TestCase):

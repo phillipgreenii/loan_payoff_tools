@@ -1,5 +1,15 @@
+'''
+loan_payoff_tools: Test module.
+
+Meant for use with py.test.
+Write each test as a function named test_<something>.
+Read more here: http://pytest.org/
+
+Copyright 2014, Phillip Green II
+Licensed under MIT
+'''
 import unittest
-from money import Money
+from loan_payoff_tools.money import Money
 import decimal
 
 
