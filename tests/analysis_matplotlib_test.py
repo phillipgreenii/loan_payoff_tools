@@ -22,7 +22,7 @@ from loan_payoff_tools.money import Money
 from loan_payoff_tools.payment_manager import Account
 
 try:
-    import matplotlib.pyplot
+    import matplotlib
     matplotlib_available = True
 except ImportError:
     matplotlib_available = False

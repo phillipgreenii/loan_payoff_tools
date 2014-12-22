@@ -53,6 +53,8 @@ def dump_monthly_payments_to_csv(output_file, monthly_payments):
             writer.writerow(mp)
 
 try:
+    import matplotlib
+    matplotlib.use('Agg')
     import matplotlib.pyplot as plt
 
     def dump_monthly_payments_to_png(output_file, monthly_payments):
