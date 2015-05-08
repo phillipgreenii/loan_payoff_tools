@@ -22,9 +22,14 @@ The easiest way to install most Python packages is via ``easy_install`` or ``pip
 Usage
 -----
 
-  >> import loan_payoff_tools
+.. code-block:: python
 
-When the package is installed via ``easy_install`` or ``pip`` this function will be bound to the ``loan_payoff_tools`` executable in the Python installation's ``bin`` directory (on Windows - the ``Scripts`` directory).
+  import loan_payoff_tools
+
+Examples
+--------
+
+See `Examples <examples>`_
 
 Development
 -----------
