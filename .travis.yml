@@ -1,7 +1,14 @@
 language: python
 python:
-  - "2.7"
+- '2.7'
 install:
-  - pip install matplotlib
+- pip install matplotlib
 script:
-  - python setup.py develop test
+- python setup.py develop test
+deploy:
+  provider: pypi
+  user: deafcheese
+  password:
+    secure: zfpSF/d9BRLlbfz6EfThFgvkKguyJ6pTHHFiq9z42xa+m9+nk52SgJamSziKWWYKRqH8vwoHpaUmNM22Qklqqwea9psHGxp/JSfbKVFbCNtMikEWQyHswNx/Lqg2iRY8Zy/cWnzYXzoPDxT7EPO4Zp92DkroRywsdxruHbB30a0=
+  on:
+    tags: true

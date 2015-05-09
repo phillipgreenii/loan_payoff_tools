@@ -41,6 +41,7 @@ setup(
     long_description=long_description,
 
     url='https://github.com/phillipgreenii/optimize_loan_payoff',
+    download_url='https://github.com/phillipgreenii/optimize_loan_payoff/tarball/0.1.0',
 
     author='Phillip Green II',
     author_email='phillip.green.ii@gmail.com',
