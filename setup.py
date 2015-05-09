@@ -35,13 +35,13 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     name='loan_payoff_tools',
 
-    version='0.1.0',
+    version='0.1.1',
 
     description='Simulates multiple different scenarios in which to payoff loans.',
     long_description=long_description,
 
     url='https://github.com/phillipgreenii/optimize_loan_payoff',
-    download_url='https://github.com/phillipgreenii/optimize_loan_payoff/tarball/0.1.0',
+    download_url='https://github.com/phillipgreenii/optimize_loan_payoff/tarball/' + version,
 
     author='Phillip Green II',
     author_email='phillip.green.ii@gmail.com',
