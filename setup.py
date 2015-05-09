@@ -14,6 +14,8 @@ import sys
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 
+from loan_payoff_tools import __version__ as version
+
 
 # This is a plug-in for setuptools that will invoke py.test
 # when you run python setup.py test
@@ -35,7 +37,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     name='loan_payoff_tools',
 
-    version='0.1.1',
+    version=version,
 
     description='Simulates multiple different scenarios in which to payoff loans.',
     long_description=long_description,
